@@ -1,11 +1,8 @@
-package com.hhplus.concert_ticketing.domain.concert;
+package com.hhplus.concert_ticketing.infra.concert;
 
 import com.hhplus.concert_ticketing.domain.concert.Concert;
-import com.hhplus.concert_ticketing.interfaces.api.controller.dto.SelectConcertRes;
-import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.List;

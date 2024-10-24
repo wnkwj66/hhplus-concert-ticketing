@@ -1,5 +1,6 @@
-package com.hhplus.concert_ticketing.domain.concert;
+package com.hhplus.concert_ticketing.infra.concert;
 
+import com.hhplus.concert_ticketing.domain.concert.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -28,4 +29,15 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     public List<Seat> selectAvailableSeats(Long performanceId, SeatStatus status) {
         return jpaSeatRepository.findByPerformanceIdAndStatusIn(performanceId,status);
     }
+
+    @Override
+    public Seat findByIdWithLock(Long seatId) {
+        return jpaSeatRepository.findByIdWithLock(seatId);
+    }
+
+    @Override
+    public Concert findById(Long concertId) {
+        return jpaConcertRepository.findById(concertId).orElse(null);
+    }
+
 }
