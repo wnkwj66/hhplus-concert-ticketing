@@ -88,4 +88,13 @@ public class Queue {
         }
         return false; // 그 외의 경우 토큰은 유효하지 않음
     }
+
+    public void isValidCheck() {
+        if(this.status != QueueStatus.ACTIVE) {
+            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
+        }
+    }
+    public void finishQueue(){
+        this.status = QueueStatus.DONE;
+    }
 }
