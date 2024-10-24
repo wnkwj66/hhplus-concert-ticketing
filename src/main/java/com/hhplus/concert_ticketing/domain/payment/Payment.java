@@ -38,6 +38,7 @@ public class Payment {
     public Payment(Long userId, Long reservationId, Integer amount) {
         this.userId = userId;
         this.reservationId = reservationId;
+        this.status = PaymentStatus.PROGRESS;
         this.amount = amount;
         this.createAt = LocalDateTime.now();
     }
