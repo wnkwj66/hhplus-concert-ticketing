@@ -10,4 +10,9 @@ public interface ConcertRepository {
     List<ConcertPerformance> selectAvailablePerformance(Long concertId, int availableSeat, ConcertStatus status);
 
     List<Seat> selectAvailableSeats(Long performanceId, SeatStatus status);
+
+    Seat findByIdWithLock(Long seatId);
+
+    Concert findById(Long concertId);
+
 }

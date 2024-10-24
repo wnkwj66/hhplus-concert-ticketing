@@ -1,5 +1,7 @@
 package com.hhplus.concert_ticketing.domain.user;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,4 +23,12 @@ public class User {
     @Column(name = "name" ,nullable = false)
     private String name;
 
+
+    public static Long parseJwtToken(String token) {
+        Claims claims = Jwts.parser()
+                .parseClaimsJws(token)
+                .getBody(); // 토큰의 페이로드에서 클레임(Claims) 추출
+
+        return claims.get("userId", Long.class);
+    }
 }

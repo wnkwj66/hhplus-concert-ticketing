@@ -33,4 +33,10 @@ public class ConcertPerformance {
     @Column(name = "totalSeat",nullable = false)
     private Integer totalSeat;
 
+
+    public void isSoldOutCheck(){
+        if(this.getStatus() == ConcertStatus.SOLD_OUT){
+            throw new IllegalStateException("매진입니다.");
+        }
+    }
 }

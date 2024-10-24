@@ -1,10 +1,14 @@
 package com.hhplus.concert_ticketing.interfaces.api.mapper;
 
 import com.hhplus.concert_ticketing.domain.concert.Concert;
-import com.hhplus.concert_ticketing.interfaces.api.controller.dto.SelectConcertRes;
+import com.hhplus.concert_ticketing.domain.concert.ConcertPerformance;
+import com.hhplus.concert_ticketing.domain.concert.Reservation;
+import com.hhplus.concert_ticketing.domain.concert.Seat;
+import com.hhplus.concert_ticketing.interfaces.api.controller.dto.concert.ReservationRes;
+import com.hhplus.concert_ticketing.interfaces.api.controller.dto.concert.SelectPerformanceRes;
+import com.hhplus.concert_ticketing.interfaces.api.controller.dto.concert.SelectConcertRes;
+import com.hhplus.concert_ticketing.interfaces.api.controller.dto.concert.SelectSeatRes;
 import org.springframework.stereotype.Component;
-
-import java.time.format.DateTimeFormatter;
 
 @Component
 public class ConcertMapper {
@@ -16,6 +20,36 @@ public class ConcertMapper {
                 concert.getReservationStartAt(),
                 concert.getStartDate(),
                 concert.getEndDate()
+        );
+    }
+
+    public SelectPerformanceRes toPerformanceResponce(ConcertPerformance performance) {
+        return new SelectPerformanceRes(
+                performance.getId(),
+                performance.getStatus(),
+                performance.getPerformanceAt(),
+                performance.getAvailableSeat(),
+                performance.getTotalSeat()
+        );
+    }
+
+    public SelectSeatRes toSeatResponce(Seat seat) {
+        return new SelectSeatRes(
+                seat.getId(),
+                seat.getPerformanceId(),
+                seat.getSeatNo(),
+                seat.getStatus(),
+                seat.getExpiredAt()
+        );
+    }
+
+    public ReservationRes toResrvationResponse(Reservation reservation) {
+        return new ReservationRes(
+                reservation.getId(),
+                reservation.getSeatId(),
+                reservation.getStatus(),
+                reservation.getReservationAt(),
+                reservation.getCreateAt()
         );
     }
 }
