@@ -84,7 +84,7 @@ public class Queue {
         return 1;
     }
 
-    public boolean  isValidateToken() {
+    public boolean isValidateToken() {
         // 토큰 상태가 WAITING 또는 ACTIVE 때 유효
         if((status == QueueStatus.WAITING || status == QueueStatus.ACTIVE) &&
                 (expiredAt == null || expiredAt.isAfter(LocalDateTime.now()))) {
