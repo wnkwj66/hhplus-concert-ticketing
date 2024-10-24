@@ -9,4 +9,6 @@ public interface JpaPerformanceRepository {
     List<ConcertPerformance> findByConcertIdAndAvailableSeatsGreaterThanAndStatusIn(Long concertId, int availableSeat, ConcertStatus status);
 
     ConcertPerformance findById(Long performanceId);
+
+    List<ConcertPerformance> findByAvailableSeatGreaterThanOrStatusNot(int availableSeat, ConcertStatus soldOut);
 }

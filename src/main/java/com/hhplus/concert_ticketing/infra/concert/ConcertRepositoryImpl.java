@@ -40,4 +40,9 @@ public class ConcertRepositoryImpl implements ConcertRepository {
         return jpaConcertRepository.findById(concertId).orElse(null);
     }
 
+    @Override
+    public List<ConcertPerformance> findByAvailableSeatGreaterThanOrStatusNot(int availableSeat, ConcertStatus soldOut) {
+        return jpaPerformanceRepository.findByAvailableSeatGreaterThanOrStatusNot(availableSeat,soldOut);
+    }
+
 }

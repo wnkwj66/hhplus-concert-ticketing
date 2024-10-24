@@ -24,11 +24,12 @@ public class User {
     private String name;
 
 
-    public static Long parseJwtToken(String token) {
+    public static Claims parseJwtToken(String token) {
         Claims claims = Jwts.parser()
                 .parseClaimsJws(token)
                 .getBody(); // 토큰의 페이로드에서 클레임(Claims) 추출
 
-        return claims.get("userId", Long.class);
+        return  claims;
     }
+
 }

@@ -61,13 +61,15 @@ public class Queue {
             // 큐 상태 반환 (내 번호는 어떻게 확인할까?)
             return verifyQueue;
         }
-        return new Queue(userId,concertId,performanceId,generateJwtToken(userId)); // 새 토큰 발급
+        return new Queue(userId,concertId,performanceId,generateJwtToken(userId,concertId,performanceId)); // 새 토큰 발급
     }
 
     // JWT 토큰 생성
-    private static String generateJwtToken(Long userId) {
+    private static String generateJwtToken(Long userId, Long concertId, Long performanceId) {
         return Jwts.builder()
                 .claim("userId", userId)
+                .claim("concertId", concertId)
+                .claim("performanceId", performanceId)
                 .claim("token", UUID.randomUUID().toString())
                 .claim("createAt", new Date())
                 .claim("expiredAt", new Date(System.currentTimeMillis() + 300000)) // exp: 5분 후 만료
@@ -96,5 +98,15 @@ public class Queue {
     }
     public void finishQueue(){
         this.status = QueueStatus.DONE;
+    }
+
+    public boolean isExpired() {
+        return expiredAt != null && LocalDateTime.now().isAfter(expiredAt);
+    }
+
+    public void expire() {
+        if (isExpired()) {
+            this.status = QueueStatus.EXPIRED;
+        }
     }
 }

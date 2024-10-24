@@ -6,6 +6,7 @@ import com.hhplus.concert_ticketing.domain.payment.PaymentRepository;
 import com.hhplus.concert_ticketing.domain.queue.Queue;
 import com.hhplus.concert_ticketing.domain.queue.QueueRepository;
 import com.hhplus.concert_ticketing.domain.user.User;
+import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,7 +37,8 @@ public class ConcertUseCase {
 
     @Transactional
     public Reservation reserveConcert(String token, Long performanceId, Long seatId) {
-        Long userId = User.parseJwtToken(token);
+        Claims claims = User.parseJwtToken(token);
+        Long userId = claims.get("userId", Long.class);
 
         Queue queue = queueRepository.findByToken(token);
         queue.isValidCheck();
@@ -57,7 +59,8 @@ public class ConcertUseCase {
 
     @Transactional
     public Payment paymentReservation(String token, Long reservationId) {
-        Long userId = User.parseJwtToken(token);
+        Claims claims = User.parseJwtToken(token);
+        Long userId = claims.get("userId", Long.class);
 
         Queue queue = queueRepository.findByToken(token);
         queue.isValidCheck();
