@@ -16,7 +16,9 @@ public enum ErrorCode {
     QUEUE_RESERVATION_FAILED_ERROR("INTERNAL_SERVER_ERROR", "대기열에서 좌석 예약에 실패했습니다."),
     QUEUE_CAPACITY_LIMIT_REACHED_ERROR("FORBIDDEN", "대기열의 수용 한도에 도달했습니다."),
     QUEUE_SERVICE_UNAVAILABLE_ERROR("SERVICE_UNAVAILABLE", "대기열 서비스가 일시적으로 중단되었습니다."),
+    PERFORMANCE_SOLD_OUT_ERROR("SERVICE_UNAVAILABLE", "대기열 서비스가 일시적으로 중단되었습니다."),
     INVALID_PERFORMANCE_ERROR("BAD_REQUEST", "잘못된 공연 정보가 제공되었습니다.");
+
 
     private final String code;
     private final String message;

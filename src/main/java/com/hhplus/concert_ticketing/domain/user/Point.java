@@ -20,7 +20,7 @@ public class Point {
 
     public void chargePoint(Integer amount) {
         if(0 >= amount) {
-          throw new IllegalStateException("충전금액이 없습니다.");
+          throw new IllegalArgumentException("충전금액이 없습니다.");
         }
         this.amount += amount;
     }

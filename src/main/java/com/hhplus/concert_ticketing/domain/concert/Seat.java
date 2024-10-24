@@ -1,9 +1,12 @@
 package com.hhplus.concert_ticketing.domain.concert;
 
+import com.hhplus.concert_ticketing.interfaces.exception.ApiException;
+import com.hhplus.concert_ticketing.interfaces.exception.ErrorCode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.logging.LogLevel;
 
 import java.time.LocalDateTime;
 
@@ -35,7 +38,7 @@ public class Seat {
 
     public void isReservedCheck(){
         if(this.status != SeatStatus.AVAILABLE) {
-            throw new IllegalStateException("해당 좌석은 예약 할 수 없습니다.");
+            throw new IllegalArgumentException("해당 좌석은 예약 할 수 없습니다.");
         } else {
             this.status = SeatStatus.TEMPORARY;
             this.expiredAt = LocalDateTime.now().plusMinutes(5);
@@ -44,7 +47,7 @@ public class Seat {
 
     public void isExpiredCheck() {
         if(LocalDateTime.now().isAfter(this.expiredAt)) {
-            throw new IllegalStateException("좌석 예약이 만료되었습니다. 다시 시도해주세요.");
+            throw new IllegalArgumentException("좌석 예약이 만료되었습니다. 다시 시도해주세요.");
         }
     }
 

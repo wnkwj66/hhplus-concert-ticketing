@@ -1,10 +1,13 @@
 package com.hhplus.concert_ticketing.domain.queue;
 
+import com.hhplus.concert_ticketing.interfaces.exception.ApiException;
+import com.hhplus.concert_ticketing.interfaces.exception.ErrorCode;
 import jakarta.persistence.*;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.logging.LogLevel;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -93,7 +96,7 @@ public class Queue {
 
     public void isValidCheck() {
         if(this.status != QueueStatus.ACTIVE) {
-            throw new IllegalArgumentException("유효하지 않은 토큰입니다.");
+            throw new ApiException(ErrorCode.QUEUE_TOKEN_INVALID_ERROR, LogLevel.INFO);
         }
     }
     public void finishQueue(){

@@ -1,9 +1,12 @@
 package com.hhplus.concert_ticketing.domain.concert;
 
+import com.hhplus.concert_ticketing.interfaces.exception.ApiException;
+import com.hhplus.concert_ticketing.interfaces.exception.ErrorCode;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.boot.logging.LogLevel;
 
 import java.time.LocalDateTime;
 
@@ -36,7 +39,7 @@ public class ConcertPerformance {
 
     public void isSoldOutCheck(){
         if(this.getStatus() == ConcertStatus.SOLD_OUT){
-            throw new IllegalStateException("매진입니다.");
+            throw new ApiException(ErrorCode.PERFORMANCE_SOLD_OUT_ERROR, LogLevel.INFO);
         }
     }
 }
