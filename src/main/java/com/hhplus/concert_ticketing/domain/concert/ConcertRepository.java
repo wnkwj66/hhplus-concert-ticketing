@@ -7,9 +7,10 @@ public interface ConcertRepository {
 
     List<Concert> selectConcertList(LocalDateTime now);
 
-    List<ConcertPerformance> selectAvailablePerformance(Long concertId, int availableSeat, ConcertStatus status);
+//    List<ConcertPerformance> selectAvailablePerformance(Long concertId, int availableSeat, ConcertStatus status);
+    List<ConcertPerformance> selectAvailablePerformance(Long concertId, int availableSeat);
 
-    List<Seat> selectAvailableSeats(Long performanceId, SeatStatus status);
+    List<Seat> selectAvailableSeats(Long performanceId);
 
     Seat findByIdWithLock(Long seatId);
 

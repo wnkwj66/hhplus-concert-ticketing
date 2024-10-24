@@ -14,7 +14,7 @@ public class UserUseCase {
 
     @Transactional
     public Integer selectUserAmount(String token) {
-        Claims claims = User.parseJwtToken(token);
+        Claims claims = Users.parseJwtToken(token);
         Long userId = claims.get("userId", Long.class);
 
         Point userPoint = userRepository.findByIdWithOutLock(userId);
@@ -23,7 +23,7 @@ public class UserUseCase {
     }
     @Transactional
     public Integer chargeUserAmount(String token, Integer amount) {
-        Claims claims = User.parseJwtToken(token);
+        Claims claims = Users.parseJwtToken(token);
         Long userId = claims.get("userId", Long.class);
 
         Point userPoint = userRepository.findById(userId);

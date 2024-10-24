@@ -2,6 +2,7 @@ package com.hhplus.concert_ticketing.infra.concert;
 
 import com.hhplus.concert_ticketing.domain.concert.*;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
+@NoRepositoryBean
 public class ConcertRepositoryImpl implements ConcertRepository {
 
     private final JpaConcertRepository jpaConcertRepository;
@@ -19,15 +21,20 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     public List<Concert> selectConcertList(LocalDateTime now){
         return jpaConcertRepository.selectConcertList(now);
     }
+/*
 
     @Override
     public List<ConcertPerformance> selectAvailablePerformance(Long concertId, int availableSeat, ConcertStatus status) {
-        return jpaPerformanceRepository.findByConcertIdAndAvailableSeatsGreaterThanAndStatusIn(concertId,availableSeat,status);
+        return jpaPerformanceRepository.findAvailablePerformances(concertId,availableSeat,status);
     }
-
+*/
     @Override
-    public List<Seat> selectAvailableSeats(Long performanceId, SeatStatus status) {
-        return jpaSeatRepository.findByPerformanceIdAndStatusIn(performanceId,status);
+    public List<ConcertPerformance> selectAvailablePerformance(Long concertId, int availableSeat) {
+        return jpaPerformanceRepository.findByConcertIdAndAvailableSeatGreaterThan(concertId,availableSeat);
+    }
+    @Override
+    public List<Seat> selectAvailableSeats(Long performanceId) {
+        return jpaSeatRepository.findByPerformanceIdAndStatusIn(performanceId);
     }
 
     @Override

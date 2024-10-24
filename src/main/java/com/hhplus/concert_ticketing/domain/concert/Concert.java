@@ -24,12 +24,12 @@ public class Concert {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Column(name = "reservationStartAt", nullable = false)
+    @Column(name = "reservation_start_at", nullable = false)
     private LocalDateTime reservationStartAt;
 
-    @Column(name = "startDate", nullable = false)
+    @Column(name = "start_date", nullable = false)
     private LocalDate startDate;
 
-    @Column(name = "endDate", nullable = false)
+    @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
 }

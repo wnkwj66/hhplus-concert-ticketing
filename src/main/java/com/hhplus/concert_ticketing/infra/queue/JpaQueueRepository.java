@@ -2,28 +2,28 @@ package com.hhplus.concert_ticketing.infra.queue;
 
 import com.hhplus.concert_ticketing.domain.queue.Queue;
 import com.hhplus.concert_ticketing.domain.queue.QueueStatus;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface JpaQueueRepository {
-    Optional<Queue> findByToken(String token);
+public interface JpaQueueRepository extends JpaRepository<Queue,Long> {
+    Optional<Queue> findByTokenId(String tokenId);
 
     @Query("""
                SELECT q FROM Queue q
                WHERE q.userId =:userId
                AND q.concertId =:concertId
                ANd q.performanceId =:performanceId
-               AND (q.status = "WAITING" OR q.status = "ACTIVE")
+               AND (q.status = com.hhplus.concert_ticketing.domain.queue.QueueStatus.WAITING OR q.status = com.hhplus.concert_ticketing.domain.queue.QueueStatus.ACTIVE)
                ORDER BY q.createAt DESC
-               LIMIT 1
            """)
-    Optional<Queue> findByToken(Long userId, Long concertId, Long performanceId);
-
-    void save(Queue queue);
+    Optional<Queue> findByToken(@Param("userId")Long userId, @Param("concertId")Long concertId, @Param("performanceId")Long performanceId);
 
     List<Queue> findAllByConcertIdAndPerformanceIdAndStatusOrderByIdDesc(Long concertId, Long performanceId, QueueStatus queueStatus);
 
@@ -36,5 +36,14 @@ public interface JpaQueueRepository {
             """)
     void updateStatusExpire(QueueStatus queueStatus, LocalDateTime conditionExpiredAt);
 
-    List<Queue> findTopMByConcertIdAndPerformanceIdAndStatusOrderByIdAsc(Long concertId, Long performanceId, QueueStatus status, int m);
+    @Query("""
+                SELECT q FROM Queue q
+                WHERE q.concertId = :concertId
+                AND q.performanceId = :performanceId
+                AND q.status = com.hhplus.concert_ticketing.domain.queue.QueueStatus.WAITING
+                ORDER BY q.id ASC
+            """)
+    List<Queue> findWaitingForActivation(@Param("concertId") Long concertId,
+                                         @Param("performanceId") Long performanceId,
+                                         Pageable pageable);
 }

@@ -5,6 +5,7 @@ import com.hhplus.concert_ticketing.domain.queue.QueueRepository;
 import com.hhplus.concert_ticketing.domain.queue.QueueStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,8 +16,8 @@ public class QueueRepositoryImpl implements QueueRepository {
     private final JpaQueueRepository jpaQueueRepository;
 
     @Override
-    public Queue findByToken(String token) {
-        return jpaQueueRepository.findByToken(token).orElse(null);
+    public Queue findByToken(String tokenId) {
+        return jpaQueueRepository.findByTokenId(tokenId).orElse(null);
     }
 
     @Override
@@ -48,8 +49,8 @@ public class QueueRepositoryImpl implements QueueRepository {
     }
 
     @Override
-    public List<Queue> findTopMByConcertIdAndPerformanceIdAndStatusOrderByIdAsc(Long concertId, Long performanceId, QueueStatus status, int m) {
-        return jpaQueueRepository.findTopMByConcertIdAndPerformanceIdAndStatusOrderByIdAsc(concertId,performanceId,status,m);
+    public List<Queue> findWaitingForActivation(Long concertId, Long performanceId, Pageable pageable) {
+        return jpaQueueRepository.findWaitingForActivation(concertId,performanceId,pageable);
     }
 
 

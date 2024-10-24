@@ -6,14 +6,15 @@ import com.hhplus.concert_ticketing.domain.concert.ConcertStatus;
 import com.hhplus.concert_ticketing.domain.queue.Queue;
 import com.hhplus.concert_ticketing.domain.queue.QueueRepository;
 import com.hhplus.concert_ticketing.domain.queue.QueueStatus;
-import com.hhplus.concert_ticketing.domain.user.User;
+import com.hhplus.concert_ticketing.domain.user.Users;
 import com.hhplus.concert_ticketing.interfaces.api.controller.QueueReulst;
 import com.hhplus.concert_ticketing.interfaces.api.controller.dto.queue.CreateQueueReq;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 @Service
@@ -37,7 +38,7 @@ public class QueueUseCase {
     @Transactional
     public QueueReulst checkQueue(String tokenId) {
         Queue queue = queueRepository.findByToken(tokenId);
-        Claims claims = User.parseJwtToken(tokenId);
+        Claims claims = Users.parseJwtToken(tokenId);
 
         Long concertId = claims.get("concertId", Long.class);
         Long performanceId = claims.get("performanceId", Long.class);
@@ -70,7 +71,8 @@ public class QueueUseCase {
 
     public void activateMUsersInQueue(Long concertId, Long performanceId, QueueStatus status, int m) {
         // 대기 중인 M명 조회 (대기열에서 대기 중인 사용자 내림차순 정렬)
-        List<Queue> waitingQueues = queueRepository.findTopMByConcertIdAndPerformanceIdAndStatusOrderByIdAsc(concertId, performanceId, status, m);
+        PageRequest pageable = PageRequest.of(0, m);  // m개의 결과를 가져옴
+        List<Queue> waitingQueues = queueRepository.findWaitingForActivation(concertId, performanceId, (Pageable) pageable);
 
         // M명 활성화 (대기 상태에서 다음 단계로 상태 전환)
         waitingQueues.forEach(queue -> {

@@ -27,13 +27,13 @@ public class ConcertPerformance {
     @Column(name = "status", nullable = false)
     private ConcertStatus status;
 
-    @Column(name = "performanceAt", nullable = false)
+    @Column(name = "performance_at", nullable = false)
     private LocalDateTime performanceAt;
 
-    @Column(name = "availableSeat",nullable = false)
+    @Column(name = "available_seat",nullable = false)
     private Integer availableSeat;
 
-    @Column(name = "totalSeat",nullable = false)
+    @Column(name = "total_seat",nullable = false)
     private Integer totalSeat;
 
 

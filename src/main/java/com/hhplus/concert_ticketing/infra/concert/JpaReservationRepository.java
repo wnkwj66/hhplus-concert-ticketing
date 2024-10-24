@@ -1,9 +1,11 @@
 package com.hhplus.concert_ticketing.infra.concert;
 
 import com.hhplus.concert_ticketing.domain.concert.Reservation;
+import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface JpaReservationRepository {
-    void save(Reservation reservation);
+import java.util.Optional;
 
-    Reservation findById(Long reservationId);
+public interface JpaReservationRepository extends JpaRepository<Reservation,Long> {
+
+    Optional<Reservation> findById(Long reservationId);
 }

@@ -90,7 +90,7 @@ class ConcertUnitTest {
                 new ConcertPerformance(2L,concertId, ConcertStatus.SOLD_OUT,LocalDateTime.now().plusDays(1),0,50)
         );
         // when
-        when(concertRepository.selectAvailablePerformance(concertId,0, ConcertStatus.AVAILABLE))
+        when(concertRepository.selectAvailablePerformance(concertId,0))
                 .thenReturn(mockPerformances.stream()
                         .filter(concertPerformance -> concertPerformance.getAvailableSeat() > 0 && concertPerformance.getStatus() == ConcertStatus.AVAILABLE)
                         .collect(Collectors.toList()));
@@ -115,7 +115,7 @@ class ConcertUnitTest {
         );
 
         // when
-        when(concertRepository.selectAvailableSeats(concertPerformance.getId(),SeatStatus.AVAILABLE))
+        when(concertRepository.selectAvailableSeats(concertPerformance.getId()))
                 .thenReturn(mockSeats.stream()
                         .filter(seat -> seat.getStatus() == SeatStatus.AVAILABLE)
                         .collect(Collectors.toList()));

@@ -1,3 +1,4 @@
+/*
 package com.hhplus.concert_ticketing.config;
 
 import com.hhplus.concert_ticketing.interfaces.filter.QueueFilter;
@@ -17,3 +18,4 @@ public class FilterConfig {
         return registrationBean;
     }
 }
+*/

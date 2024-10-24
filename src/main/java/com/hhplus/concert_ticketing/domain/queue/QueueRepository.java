@@ -1,7 +1,7 @@
 package com.hhplus.concert_ticketing.domain.queue;
 
-import com.hhplus.concert_ticketing.interfaces.api.controller.dto.queue.CreateQueueReq;
 
+import org.springframework.data.domain.Pageable;
 import java.util.List;
 
 public interface QueueRepository {
@@ -17,5 +17,5 @@ public interface QueueRepository {
 
     void updateExpireConditionToken();
 
-    List<Queue> findTopMByConcertIdAndPerformanceIdAndStatusOrderByIdAsc(Long concertId, Long performanceId, QueueStatus status, int m);
+    List<Queue> findWaitingForActivation(Long concertId, Long performanceId, Pageable pageable);
 }

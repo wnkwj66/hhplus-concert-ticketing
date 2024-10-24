@@ -5,7 +5,7 @@ import com.hhplus.concert_ticketing.domain.payment.Payment;
 import com.hhplus.concert_ticketing.domain.payment.PaymentRepository;
 import com.hhplus.concert_ticketing.domain.queue.Queue;
 import com.hhplus.concert_ticketing.domain.queue.QueueRepository;
-import com.hhplus.concert_ticketing.domain.user.User;
+import com.hhplus.concert_ticketing.domain.user.Users;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -28,16 +28,17 @@ public class ConcertUseCase {
     }
 
     public List<ConcertPerformance> selectPerformances(Long concertId) {
-        return concertRepository.selectAvailablePerformance(concertId, 0, ConcertStatus.AVAILABLE);
+//        return concertRepository.selectAvailablePerformance(concertId, 0, ConcertStatus.AVAILABLE);
+        return concertRepository.selectAvailablePerformance(concertId, 0);
     }
 
     public List<Seat> selectSeats(Long performanceId) {
-        return concertRepository.selectAvailableSeats(performanceId, SeatStatus.AVAILABLE);
+        return concertRepository.selectAvailableSeats(performanceId);
     }
 
     @Transactional
     public Reservation reserveConcert(String token, Long performanceId, Long seatId) {
-        Claims claims = User.parseJwtToken(token);
+        Claims claims = Users.parseJwtToken(token);
         Long userId = claims.get("userId", Long.class);
 
         Queue queue = queueRepository.findByToken(token);
@@ -59,7 +60,7 @@ public class ConcertUseCase {
 
     @Transactional
     public Payment paymentReservation(String token, Long reservationId) {
-        Claims claims = User.parseJwtToken(token);
+        Claims claims = Users.parseJwtToken(token);
         Long userId = claims.get("userId", Long.class);
 
         Queue queue = queueRepository.findByToken(token);
