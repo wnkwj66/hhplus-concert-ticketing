@@ -24,4 +24,12 @@ public class Point {
         }
         this.amount += amount;
     }
+
+    public void addAmount(Integer amount) {
+        if(0 >= amount) {
+            throw new IllegalArgumentException("충전금액을 0 이상으로 설정해주세요.");
+        }
+
+        this.amount += amount;
+    }
 }

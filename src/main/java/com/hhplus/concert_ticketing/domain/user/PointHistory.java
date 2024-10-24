@@ -28,4 +28,15 @@ public class PointHistory {
 
     @Column(name = "create_at",nullable = false)
     private LocalDateTime createAt;
+
+    public PointHistory(Long userId, Integer amount, PointType pointType) {
+        this.userId = userId;
+        this.amount = amount;
+        this.type = pointType;
+        this.createAt = LocalDateTime.now();
+    };
+
+    public static PointHistory enterPointHitory(Long userId, Integer amount, PointType pointType) {
+       return new PointHistory(userId,amount,pointType);
+    }
 }
