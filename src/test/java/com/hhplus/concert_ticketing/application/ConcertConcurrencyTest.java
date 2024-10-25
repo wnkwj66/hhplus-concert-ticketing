@@ -2,14 +2,11 @@ package com.hhplus.concert_ticketing.application;
 
 import com.hhplus.concert_ticketing.domain.concert.*;
 import com.hhplus.concert_ticketing.domain.queue.Queue;
+import com.hhplus.concert_ticketing.domain.queue.QueueStatus;
 import com.hhplus.concert_ticketing.infra.concert.JpaConcertRepository;
 import com.hhplus.concert_ticketing.infra.concert.JpaPerformanceRepository;
 import com.hhplus.concert_ticketing.infra.concert.JpaSeatRepository;
 import com.hhplus.concert_ticketing.infra.queue.JpaQueueRepository;
-import com.hhplus.concert_ticketing.infra.user.JpaPointRepository;
-import com.hhplus.concert_ticketing.infra.user.JpaUsersRepository;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -47,35 +44,36 @@ public class ConcertConcurrencyTest {
     public void setUp() {
         // JWT 토큰 생성 (예: userId = 1)
         userId = 1L;
-        token = Jwts.builder()
-                .claim("userId", userId)
-                .signWith(SignatureAlgorithm.HS256, "secretKey")
-                .compact();
-
 
         // 필요한 테스트 데이터 생성
-        Concert concert = jpaConcertRepository.save(new Concert(1L, "Concert A", LocalDateTime.of(2024, 10, 3, 12, 0, 0), LocalDate.of(2024, 10, 10), LocalDate.of(2024, 10, 11)));
+        Concert concert = jpaConcertRepository.save(new Concert(1L, "Concert A", LocalDateTime.of(2024, 10, 20, 12, 0, 0), LocalDate.of(2024, 10, 30), LocalDate.of(2024, 11, 22)));
 
         ConcertPerformance performance = jpaPerformanceRepository.save(new ConcertPerformance(1L, concert.getId(), ConcertStatus.AVAILABLE,LocalDateTime.now().plusDays(1),10,50));
 
-        Seat seat = jpaSeatRepository.save(new Seat(15L,performance.getId(), 15, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusMinutes(5)));
+        Seat seat = jpaSeatRepository.save(new Seat(1L,performance.getId(), 15, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusMinutes(5)));
 
-
+        token = Queue.generateJwtToken(userId, concert.getId(),performance.getId());
         // 테스트용 Queue 생성
-        queue = new Queue(userId, concert.getId(),performance.getId(),token);
+        queue = new Queue(userId,concert.getId(),performance.getId(), token , QueueStatus.ACTIVE);
         jpaQueueRepository.save(queue);
+    }
+    @AfterEach
+    void cleanUp() {
+        jpaSeatRepository.deleteAll();
+        jpaPerformanceRepository.deleteAll();
+        jpaConcertRepository.deleteAll();
     }
 
     @Test
     void 좌석_임시예약_동시성_테스트() throws InterruptedException {
         // given
-        Queue queue = Queue.enterQueue(null, 1L, 1L,1L);
+        Queue queue = new Queue(userId,1L,1L,token,QueueStatus.ACTIVE);
         int numberOfThreads = 10; // 동시 시도 횟수
         CountDownLatch latch = new CountDownLatch(numberOfThreads);
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
         AtomicInteger successfulReservations = new AtomicInteger();
 
-        for (int i = 0; i < numberOfThreads; i++) {
+        for (int i = 0; i <= numberOfThreads; i++) {
             executorService.submit(() -> {
                 try {
                     concertUseCase.reserveConcert(queue.getTokenId(), 1L, 1L);

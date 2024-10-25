@@ -3,6 +3,7 @@ package com.hhplus.concert_ticketing.application;
 import com.hhplus.concert_ticketing.domain.concert.*;
 import com.hhplus.concert_ticketing.domain.payment.Payment;
 import com.hhplus.concert_ticketing.domain.queue.Queue;
+import com.hhplus.concert_ticketing.domain.queue.QueueStatus;
 import com.hhplus.concert_ticketing.domain.user.Point;
 import com.hhplus.concert_ticketing.domain.user.Users;
 import com.hhplus.concert_ticketing.infra.concert.JpaConcertRepository;
@@ -11,10 +12,9 @@ import com.hhplus.concert_ticketing.infra.concert.JpaSeatRepository;
 import com.hhplus.concert_ticketing.infra.queue.JpaQueueRepository;
 import com.hhplus.concert_ticketing.infra.user.JpaPointRepository;
 import com.hhplus.concert_ticketing.infra.user.JpaUsersRepository;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -56,22 +56,17 @@ public class ConcertUseCaseIntegrationTest {
     public void setUp() {
         // JWT 토큰 생성 (예: userId = 1)
         userId = 1L;
-        token = Jwts.builder()
-                .claim("userId", userId)
-                .signWith(SignatureAlgorithm.HS256, "secretKey")
-                .compact();
-
 
         // 필요한 테스트 데이터 생성
-        Concert concert = jpaConcertRepository.save(new Concert(1L, "Concert A", LocalDateTime.of(2024, 10, 3, 12, 0, 0), LocalDate.of(2024, 10, 10), LocalDate.of(2024, 10, 11)));
+        Concert concert = jpaConcertRepository.save(new Concert(1L, "Concert A", LocalDateTime.of(2024, 10, 20, 12, 0, 0), LocalDate.of(2024, 10, 30), LocalDate.of(2024, 11, 22)));
 
         ConcertPerformance performance = jpaPerformanceRepository.save(new ConcertPerformance(1L, concert.getId(), ConcertStatus.AVAILABLE,LocalDateTime.now().plusDays(1),10,50));
 
-        Seat seat = jpaSeatRepository.save(new Seat(15L,performance.getId(), 15, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusMinutes(5)));
+        Seat seat = jpaSeatRepository.save(new Seat(1L,performance.getId(), 15, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusMinutes(5)));
 
-
+        token = Queue.generateJwtToken(userId, concert.getId(),performance.getId());
         // 테스트용 Queue 생성
-        queue = new Queue(userId, concert.getId(),performance.getId(),token);
+        queue = new Queue(userId,concert.getId(),performance.getId(), token ,QueueStatus.ACTIVE);
         jpaQueueRepository.save(queue);
     }
     @AfterEach
@@ -104,25 +99,20 @@ public class ConcertUseCaseIntegrationTest {
 
     @Test
     @DirtiesContext
-    void 예약_성공_테스트() {
-        Reservation reservation = concertUseCase.reserveConcert(token, 1L,15L);
-
-        assertEquals(15L, reservation.getSeatId());
-        assertEquals(ReservationStatus.TEMPORARY, reservation.getStatus());
-    }
-
-    @Test
-    @DirtiesContext
-    void 결제_성공_테스트() {
+    @DisplayName("예약 및 결제 진행과정 테스트")
+    void 결제_진행_성공_테스트() {
         // given
-        Users user = jpaUserRepository.save(new Users(1L,1L,"테스터"));
-        Point userPoint = new Point(1L, 10000);
+        Users user = jpaUserRepository.save(new Users(1L,"테스터"));
+        Point userPoint = new Point(1L, user.getId(), 10000);
         jpaPointRepository.save(userPoint);
 
         // when
+        Reservation reservation = concertUseCase.reserveConcert(token, 1L,1L);
         Payment payment = concertUseCase.paymentReservation(token, 1L);
 
         // then
         assertEquals(50000,payment.getAmount());
+        assertEquals(1L, reservation.getSeatId());
+        assertEquals(ReservationStatus.TEMPORARY, reservation.getStatus());
     }
 }
