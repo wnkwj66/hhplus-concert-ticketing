@@ -63,7 +63,7 @@ class ConcertUnitTest {
                 LocalDate.of(2024, 10, 4)));  // endDate
 
         // when
-        when(concertRepository.selectConcertList(any(LocalDateTime.class))).thenAnswer(invocation -> {
+        when(concertRepository.selectConcertList(any(LocalDateTime.class),any(LocalDate.class))).thenAnswer(invocation -> {
             return mockConcerts.stream()
                     .filter(concert -> concert.getReservationStartAt().isBefore(fixedNow) || concert.getStartDate().isEqual(fixedDate))
                     .filter(concert -> concert.getEndDate().isAfter(fixedDate) || concert.getEndDate().isEqual(fixedDate))

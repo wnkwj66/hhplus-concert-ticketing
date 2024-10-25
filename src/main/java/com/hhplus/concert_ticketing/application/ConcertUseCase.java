@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -24,7 +25,7 @@ public class ConcertUseCase {
     private final PaymentRepository paymentRepository;
 
     public List<Concert> selectConcertList() {
-        return concertRepository.selectConcertList(LocalDateTime.now());
+        return concertRepository.selectConcertList(LocalDateTime.now(),LocalDate.now());
     }
 
     public List<ConcertPerformance> selectPerformances(Long concertId) {

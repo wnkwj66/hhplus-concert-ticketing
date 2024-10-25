@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,8 +19,8 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     private final JpaSeatRepository jpaSeatRepository;
 
     @Override
-    public List<Concert> selectConcertList(LocalDateTime now){
-        return jpaConcertRepository.selectConcertList(now);
+    public List<Concert> selectConcertList( LocalDateTime now, LocalDate now1){
+        return jpaConcertRepository.selectConcertList(now,now1);
     }
 /*
 
