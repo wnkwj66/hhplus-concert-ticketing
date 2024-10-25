@@ -2,6 +2,7 @@ package com.hhplus.concert_ticketing.domain.queue;
 
 import com.hhplus.concert_ticketing.interfaces.exception.ApiException;
 import com.hhplus.concert_ticketing.interfaces.exception.ErrorCode;
+import io.jsonwebtoken.SignatureAlgorithm;
 import jakarta.persistence.*;
 import io.jsonwebtoken.Jwts;
 import lombok.AllArgsConstructor;
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.boot.logging.LogLevel;
 
 import java.time.LocalDateTime;
+import java.util.Base64;
 import java.util.Date;
 import java.util.UUID;
 
@@ -19,6 +21,7 @@ import java.util.UUID;
 @NoArgsConstructor
 @Table(name = "QUEUE")
 public class Queue {
+    private static final String SECRET_KEY = Base64.getEncoder().encodeToString("7v3Y8xD3k6W1rTqH4z5NqD7s6Jv2F8x3".getBytes());
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,34 +51,46 @@ public class Queue {
     @Column(name = "expired_at",nullable = false)
     private LocalDateTime expiredAt;
 
-    public Queue(Long userId,Long concertId, Long performanceId, String tokenId) {
+    public Queue(Long userId, Long concertId, Long performanceId, String tokenId, QueueStatus status) {
+        this.userId = userId;
+        this.concertId = concertId;
+        this.performanceId = performanceId;
+        this.tokenId = tokenId;
+        this.status = status;
+        this.createAt = LocalDateTime.now();
+        this.updateAt = LocalDateTime.now();
+        this.expiredAt = LocalDateTime.now().plusMinutes(5);
+    }
+
+    public Queue(Long userId, Long concertId, Long performanceId, String tokenId) {
         this.userId = userId;
         this.concertId = concertId;
         this.performanceId = performanceId;
         this.tokenId = tokenId;
         this.status = QueueStatus.WAITING;
         this.createAt = LocalDateTime.now();
+        this.updateAt = LocalDateTime.now();
         this.expiredAt = LocalDateTime.now().plusMinutes(5);
     }
 
     // 새 토큰을 발급하거나 기존 토큰 반환
     public static Queue enterQueue(Queue verifyQueue , Long userId, Long concertId, Long performanceId) {
         if(verifyQueue != null) {
-            // 큐 상태 반환 (내 번호는 어떻게 확인할까?)
             return verifyQueue;
         }
         return new Queue(userId,concertId,performanceId,generateJwtToken(userId,concertId,performanceId)); // 새 토큰 발급
     }
 
     // JWT 토큰 생성
-    private static String generateJwtToken(Long userId, Long concertId, Long performanceId) {
+    public static String generateJwtToken(Long userId, Long concertId, Long performanceId) {
         return Jwts.builder()
                 .claim("userId", userId)
                 .claim("concertId", concertId)
                 .claim("performanceId", performanceId)
                 .claim("token", UUID.randomUUID().toString())
                 .claim("createAt", new Date())
-                .claim("expiredAt", new Date(System.currentTimeMillis() + 300000)) // exp: 5분 후 만료
+                .claim("expiredAt", new Date(System.currentTimeMillis() + 300000)) // 5분 후 만료
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY) // Base64 인코딩된 시크릿 키 사용
                 .compact();
     }
 

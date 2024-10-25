@@ -41,6 +41,7 @@ public class Payment {
         this.status = PaymentStatus.PROGRESS;
         this.amount = amount;
         this.createAt = LocalDateTime.now();
+        this.updateAt = LocalDateTime.now();
     }
     public void finishPayment(){
         this.status = PaymentStatus.DONE;
