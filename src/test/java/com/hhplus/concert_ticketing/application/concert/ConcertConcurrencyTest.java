@@ -1,5 +1,6 @@
-package com.hhplus.concert_ticketing.application;
+package com.hhplus.concert_ticketing.application.concert;
 
+import com.hhplus.concert_ticketing.application.ConcertUseCase;
 import com.hhplus.concert_ticketing.domain.concert.*;
 import com.hhplus.concert_ticketing.domain.queue.Queue;
 import com.hhplus.concert_ticketing.domain.queue.QueueStatus;
@@ -67,7 +68,6 @@ public class ConcertConcurrencyTest {
     @Test
     void 좌석_임시예약_동시성_테스트() throws InterruptedException {
         // given
-        Queue queue = new Queue(userId,1L,1L,token,QueueStatus.ACTIVE);
         int numberOfThreads = 10; // 동시 시도 횟수
         CountDownLatch latch = new CountDownLatch(numberOfThreads);
         ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
@@ -76,7 +76,7 @@ public class ConcertConcurrencyTest {
         for (int i = 0; i <= numberOfThreads; i++) {
             executorService.submit(() -> {
                 try {
-                    concertUseCase.reserveConcert(queue.getTokenId(), 1L, 1L);
+                    concertUseCase.reserveConcert(token, 1L, 1L);
                     successfulReservations.getAndIncrement();
                 } catch (Exception e) {
                     throw new IllegalStateException("에러발생");

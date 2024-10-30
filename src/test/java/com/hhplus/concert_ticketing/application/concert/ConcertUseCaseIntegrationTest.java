@@ -1,5 +1,6 @@
-package com.hhplus.concert_ticketing.application;
+package com.hhplus.concert_ticketing.application.concert;
 
+import com.hhplus.concert_ticketing.application.ConcertUseCase;
 import com.hhplus.concert_ticketing.domain.concert.*;
 import com.hhplus.concert_ticketing.domain.payment.Payment;
 import com.hhplus.concert_ticketing.domain.queue.Queue;

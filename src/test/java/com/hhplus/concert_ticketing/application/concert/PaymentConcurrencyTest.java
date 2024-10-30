@@ -1,5 +1,6 @@
-package com.hhplus.concert_ticketing.application;
+package com.hhplus.concert_ticketing.application.concert;
 
+import com.hhplus.concert_ticketing.application.ConcertUseCase;
 import com.hhplus.concert_ticketing.domain.concert.*;
 import com.hhplus.concert_ticketing.domain.queue.Queue;
 import com.hhplus.concert_ticketing.domain.queue.QueueStatus;
@@ -8,14 +9,11 @@ import com.hhplus.concert_ticketing.infra.concert.JpaPerformanceRepository;
 import com.hhplus.concert_ticketing.infra.concert.JpaReservationRepository;
 import com.hhplus.concert_ticketing.infra.concert.JpaSeatRepository;
 import com.hhplus.concert_ticketing.infra.queue.JpaQueueRepository;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
@@ -29,7 +27,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@ExtendWith(SpringExtension.class)
 public class PaymentConcurrencyTest {
     @Autowired
     private ConcertUseCase concertUseCase;
