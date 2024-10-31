@@ -21,6 +21,14 @@ public class Point {
     @Column(name = "amount",nullable = false)
     private Integer amount;
 
+    @Version
+    private Integer version;
+
+    public Point(Long userId, Integer amount) {
+        this.userId = userId;
+        this.amount = amount;
+    }
+
     public void chargePoint(Integer amount) {
         if(0 >= amount) {
           throw new IllegalArgumentException("충전금액이 없습니다.");

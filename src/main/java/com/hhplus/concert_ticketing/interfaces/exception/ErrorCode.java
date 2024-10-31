@@ -6,6 +6,7 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ErrorCode {
+    // TODO: Code 부분을 HttpStatus 로 변경
     QUEUE_NOT_FOUND_ERROR("NOT_FOUND", "대기열을 찾을 수 없습니다."),
     QUEUE_FULL_ERROR("FORBIDDEN", "대기열이 가득 찼습니다."),
     QUEUE_EXPIRED_ERROR("FORBIDDEN", "대기열 대기 시간이 만료되었습니다."),
@@ -17,7 +18,8 @@ public enum ErrorCode {
     QUEUE_CAPACITY_LIMIT_REACHED_ERROR("FORBIDDEN", "대기열의 수용 한도에 도달했습니다."),
     QUEUE_SERVICE_UNAVAILABLE_ERROR("SERVICE_UNAVAILABLE", "대기열 서비스가 일시적으로 중단되었습니다."),
     PERFORMANCE_SOLD_OUT_ERROR("SERVICE_UNAVAILABLE", "대기열 서비스가 일시적으로 중단되었습니다."),
-    INVALID_PERFORMANCE_ERROR("BAD_REQUEST", "잘못된 공연 정보가 제공되었습니다.");
+    INVALID_PERFORMANCE_ERROR("BAD_REQUEST", "잘못된 공연 정보가 제공되었습니다."),
+    BAD_REQUEST_ERROR("BAD_REQUEST", "잘못된 요청입니다.");
 
 
     private final String code;
