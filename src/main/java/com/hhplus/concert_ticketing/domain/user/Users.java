@@ -24,6 +24,10 @@ public class Users {
     @Column(name = "name" ,nullable = false)
     private String name;
 
+    public Users(String name) {
+        this.name = name;
+    }
+
     public static Claims parseJwtToken(String token) {
         Claims claims = Jwts.parser()
                 .setSigningKey(SECRET_KEY)
