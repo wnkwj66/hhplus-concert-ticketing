@@ -93,6 +93,16 @@ public class Queue {
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY) // Base64 인코딩된 시크릿 키 사용
                 .compact();
     }
+    // JWT 토큰 생성
+    public static String generateJwtToken(Long userId) {
+        return Jwts.builder()
+                .claim("userId", userId)
+                .claim("token", UUID.randomUUID().toString())
+                .claim("createAt", new Date())
+                .claim("expiredAt", new Date(System.currentTimeMillis() + 300000)) // 5분 후 만료
+                .signWith(SignatureAlgorithm.HS256, SECRET_KEY) // Base64 인코딩된 시크릿 키 사용
+                .compact();
+    }
 
     public static int waitingNumber(Queue verifyQueue){
         // 마지막 maxCount 정보 조회 후 반환 (이거 도메인에서 해야함 ?) or 서비스?
