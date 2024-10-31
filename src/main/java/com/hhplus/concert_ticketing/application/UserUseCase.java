@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserUseCase {
     private final UserRepository userRepository;
+    private final PointRepository pointRepository;
     private final PointHistoryRepository pointHistoryRepository;
 
     @Transactional
@@ -20,7 +21,7 @@ public class UserUseCase {
         Claims claims = Users.parseJwtToken(token);
         Long userId = claims.get("userId", Long.class);
 
-        Point userPoint = userRepository.findByIdWithOutLock(userId);
+        Point userPoint = pointRepository.findByIdWithOutLock(userId);
         return userPoint.getAmount();
 
     }
@@ -29,7 +30,7 @@ public class UserUseCase {
         Claims claims = Users.parseJwtToken(token);
         Long userId = claims.get("userId", Long.class);
 
-        Point userPoint = userRepository.findById(userId);
+        Point userPoint = pointRepository.findById(userId);
         userPoint.addAmount(amount);
 
         PointHistory pointHistory = PointHistory.enterPointHitory(userId, amount, PointType.CHARGE);
@@ -47,7 +48,22 @@ public class UserUseCase {
         Claims claims = Users.parseJwtToken(token);
         Long userId = claims.get("userId", Long.class);
 
-        Point userPoint = userRepository.findById(userId);
+        Point userPoint = pointRepository.findById(userId);
+        userPoint.addAmount(amount);
+
+        // 포인트 충전 기록 추가
+        PointHistory pointHistory = PointHistory.enterPointHitory(userId, amount, PointType.CHARGE);
+        pointHistoryRepository.save(pointHistory);
+
+        return userPoint.getAmount();
+    }
+
+    @Transactional
+    public Integer chargeUserAmountPessimisticLock(String token, Integer amount) {
+        Claims claims = Users.parseJwtToken(token);
+        Long userId = claims.get("userId", Long.class);
+
+        Point userPoint = pointRepository.findByIdWithLock(userId);
         userPoint.addAmount(amount);
 
         // 포인트 충전 기록 추가

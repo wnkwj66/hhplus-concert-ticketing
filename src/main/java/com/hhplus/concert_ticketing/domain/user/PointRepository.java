@@ -7,4 +7,6 @@ public interface PointRepository {
     Point findByIdWithOutLock(Long userId);
 
     void save(Point point);
+
+    Point findByIdWithLock(Long userId);
 }
