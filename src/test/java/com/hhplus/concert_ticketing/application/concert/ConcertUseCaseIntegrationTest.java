@@ -104,7 +104,7 @@ public class ConcertUseCaseIntegrationTest {
     void 결제_진행_성공_테스트() {
         // given
         Users user = jpaUserRepository.save(new Users(1L,"테스터"));
-        Point userPoint = new Point(1L, user.getId(), 10000);
+        Point userPoint = new Point(user.getId(), 10000);
         jpaPointRepository.save(userPoint);
 
         // when
