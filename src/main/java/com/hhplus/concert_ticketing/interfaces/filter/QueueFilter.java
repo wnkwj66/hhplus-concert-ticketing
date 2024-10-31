@@ -36,10 +36,6 @@ public class QueueFilter implements Filter {
         }
     }
 
-    @Override
-    public void destroy() {
-        // 필터 종료 시 필요 작업
-    }
 
     // 대기열 토큰이 유효한지 체크하는 메서드
     private boolean isQueueTokenValid(String queueToken) {
@@ -51,4 +47,8 @@ public class QueueFilter implements Filter {
         return true;
     }
 
+    @Override
+    public void destroy() {
+        // 필터 종료 시 필요 작업
+    }
 }
