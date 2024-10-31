@@ -44,6 +44,8 @@ dependencies {
 	// Optimistic Lock
 	implementation("org.springframework.retry:spring-retry:1.3.3")
 	implementation("org.springframework:spring-aspects:5.3.22")
+	// Redis
+	implementation("org.redisson:redisson-spring-boot-starter:3.23.2")
 
 
 }
