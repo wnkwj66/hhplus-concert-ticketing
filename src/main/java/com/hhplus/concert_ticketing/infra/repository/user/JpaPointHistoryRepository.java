@@ -1,4 +1,4 @@
-package com.hhplus.concert_ticketing.infra.user;
+package com.hhplus.concert_ticketing.infra.repository.user;
 
 import com.hhplus.concert_ticketing.domain.user.PointHistory;
 import org.springframework.data.jpa.repository.JpaRepository;

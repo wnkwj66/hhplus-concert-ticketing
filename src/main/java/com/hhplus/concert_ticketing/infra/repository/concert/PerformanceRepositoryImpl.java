@@ -1,12 +1,10 @@
-package com.hhplus.concert_ticketing.infra.concert;
+package com.hhplus.concert_ticketing.infra.repository.concert;
 
 import com.hhplus.concert_ticketing.domain.concert.ConcertPerformance;
 import com.hhplus.concert_ticketing.domain.concert.ConcertPerformanceRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.stereotype.Repository;
-
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor

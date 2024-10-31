@@ -1,4 +1,4 @@
-package com.hhplus.concert_ticketing.infra.concert;
+package com.hhplus.concert_ticketing.infra.repository.concert;
 
 import com.hhplus.concert_ticketing.domain.concert.*;
 import lombok.RequiredArgsConstructor;

@@ -1,6 +1,5 @@
-package com.hhplus.concert_ticketing.infra.user;
+package com.hhplus.concert_ticketing.infra.repository.user;
 
-import com.hhplus.concert_ticketing.domain.user.Point;
 import com.hhplus.concert_ticketing.domain.user.UserRepository;
 import com.hhplus.concert_ticketing.domain.user.Users;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.hhplus.concert_ticketing.infra.payment;
+package com.hhplus.concert_ticketing.infra.repository.payment;
 
 import com.hhplus.concert_ticketing.domain.payment.Payment;
 import com.hhplus.concert_ticketing.domain.payment.PaymentRepository;

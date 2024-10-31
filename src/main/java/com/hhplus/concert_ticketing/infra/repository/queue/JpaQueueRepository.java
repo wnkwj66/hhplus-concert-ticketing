@@ -1,4 +1,4 @@
-package com.hhplus.concert_ticketing.infra.queue;
+package com.hhplus.concert_ticketing.infra.repository.queue;
 
 import com.hhplus.concert_ticketing.domain.queue.Queue;
 import com.hhplus.concert_ticketing.domain.queue.QueueStatus;
