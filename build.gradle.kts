@@ -41,6 +41,9 @@ dependencies {
 	// test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	// Optimistic Lock
+	implementation("org.springframework.retry:spring-retry:1.3.3")
+	implementation("org.springframework:spring-aspects:5.3.22")
 
 
 }
