@@ -2,6 +2,11 @@ package com.hhplus.concert_ticketing.interfaces.api.controller;
 
 
 import com.hhplus.concert_ticketing.application.UserUseCase;
+import com.hhplus.concert_ticketing.domain.queue.Queue;
+import com.hhplus.concert_ticketing.domain.user.Point;
+import com.hhplus.concert_ticketing.domain.user.Users;
+import com.hhplus.concert_ticketing.infra.repository.user.JpaPointRepository;
+import com.hhplus.concert_ticketing.infra.repository.user.JpaUsersRepository;
 import com.hhplus.concert_ticketing.interfaces.api.common.ApiResponse;
 import com.hhplus.concert_ticketing.interfaces.api.controller.dto.user.UserAmountChargeReq;
 import com.hhplus.concert_ticketing.interfaces.api.controller.dto.user.UserAmountChargeRes;
@@ -17,6 +22,22 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserUseCase userUseCase;
+    private final JpaUsersRepository jpaUsersRepository;
+    private final JpaPointRepository pointRepository;
+
+    @PostMapping("/add")
+    public ApiResponse<String> addUser(@RequestParam("name") String name) {
+        Users user = new Users(name);
+        Users result = jpaUsersRepository.save(user);
+
+        long userId = jpaUsersRepository.findById(result.getId()).get().getId();
+
+        Point point = new Point(userId,0);
+        pointRepository.save(point);
+
+        return ApiResponse.success(Queue.generateJwtToken(userId));
+
+    }
 
     @Operation(summary = "유저 요금 조회 API")
     @GetMapping("/amount")
@@ -25,13 +46,30 @@ public class UserController {
     ) {
         return ApiResponse.success(new UserAmountChargeRes(userUseCase.selectUserAmount(token)));
     }
-    @Operation(summary = "유저 요금 충전 API")
-    @PostMapping("/amount")
 
-    public ApiResponse<UserAmountChargeRes> selectUserAmount(
+
+    @Operation(summary = "유저 요금 충전 API")
+    @PostMapping("/amount/optimistic")
+    public ApiResponse<UserAmountChargeRes> selectUserAmountOptimisticLock(
             @RequestHeader("Authorization") String token,
             @RequestBody UserAmountChargeReq request
     ) {
-        return ApiResponse.success(new UserAmountChargeRes(userUseCase.chargeUserAmount(token, request.amount())));
+        return ApiResponse.success(new UserAmountChargeRes(userUseCase.chargeUserAmountOptimisticLock(token, request.amount())));
+    }
+    @Operation(summary = "유저 요금 충전 API")
+    @PostMapping("/amount/pessimistic")
+    public ApiResponse<UserAmountChargeRes> selectUserAmountPessimisticLock(
+            @RequestHeader("Authorization") String token,
+            @RequestBody UserAmountChargeReq request
+    ) {
+        return ApiResponse.success(new UserAmountChargeRes(userUseCase.chargeUserAmountPessimisticLock(token, request.amount())));
+    }
+    @Operation(summary = "유저 요금 충전 API")
+    @PostMapping("/amount/redis")
+    public ApiResponse<UserAmountChargeRes> selectUserAmountRedisLock(
+            @RequestHeader("Authorization") String token,
+            @RequestBody UserAmountChargeReq request
+    ) {
+        return ApiResponse.success(new UserAmountChargeRes(userUseCase.chargeUserAmountRedisLock(token, request.amount())));
     }
 }
