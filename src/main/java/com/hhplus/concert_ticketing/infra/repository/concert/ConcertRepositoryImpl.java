@@ -53,4 +53,10 @@ public class ConcertRepositoryImpl implements ConcertRepository {
         return jpaPerformanceRepository.findByAvailableSeatGreaterThanOrStatusNot(availableSeat,soldOut);
     }
 
+    @Override
+    public Concert save(Concert concert) {
+        jpaConcertRepository.save(concert);
+        return concert;
+    }
+
 }

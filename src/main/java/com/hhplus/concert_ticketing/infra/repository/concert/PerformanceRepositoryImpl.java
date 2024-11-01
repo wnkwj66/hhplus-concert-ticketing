@@ -16,4 +16,9 @@ public class PerformanceRepositoryImpl implements ConcertPerformanceRepository {
     public ConcertPerformance findById(Long performanceId) {
         return jpaPerformanceRepository.findById(performanceId).orElse(null);
     }
+
+    @Override
+    public ConcertPerformance save(ConcertPerformance concertPerformance) {
+        return jpaPerformanceRepository.save(concertPerformance);
+    }
 }

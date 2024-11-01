@@ -18,4 +18,6 @@ public interface ConcertRepository {
     Concert findById(Long concertId);
 
     List<ConcertPerformance> findByAvailableSeatGreaterThanOrStatusNot(int availableSeat, ConcertStatus soldOut);
+
+    Concert save(Concert concert);
 }

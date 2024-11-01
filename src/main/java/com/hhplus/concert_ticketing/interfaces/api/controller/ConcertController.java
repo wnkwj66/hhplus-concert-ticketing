@@ -28,6 +28,11 @@ public class ConcertController {
     private final ConcertMapper concertMapper;
     private final PaymentMapper paymentMapper;
 
+    @PostMapping("/add")
+    public void setConcert(){
+        concertUseCase.setConcert();
+    }
+
     @Operation(summary = "콘서트 조회 API", description = "예약 가능한 콘서트 목록을 조회한다.")
     @GetMapping("/")
     public ApiResponse<List<SelectConcertRes>> selectConcert() {
@@ -69,6 +74,39 @@ public class ConcertController {
             @RequestBody ReservationReq request) {
 
         Reservation reservation = concertUseCase.reserveConcert(token, request.performanceId(), request.seatId());
+
+        ReservationRes response = concertMapper.toResrvationResponse(reservation);
+        return ApiResponse.success(response);
+    }
+    @Operation(summary = "좌석 예약 요청 API 낙관적락 적용",description = "좌석 예약을 요청한다.")
+    @PostMapping("/reserve/optimistic")
+    public ApiResponse<ReservationRes> reserveConcertOptimisticLock(
+            @RequestHeader("Authorization") String token,
+            @RequestBody ReservationReq request) {
+
+        Reservation reservation = concertUseCase.reserveConcertOptimisticLock(token, request.performanceId(), request.seatId());
+
+        ReservationRes response = concertMapper.toResrvationResponse(reservation);
+        return ApiResponse.success(response);
+    }
+    @Operation(summary = "좌석 예약 요청 API 비관적락 적용",description = "좌석 예약을 요청한다.")
+    @PostMapping("/reserve/pessimistic")
+    public ApiResponse<ReservationRes> reserveConcertPessimisticLock(
+            @RequestHeader("Authorization") String token,
+            @RequestBody ReservationReq request) {
+
+        Reservation reservation = concertUseCase.reserveConcertPessimisticLock(token, request.performanceId(), request.seatId());
+
+        ReservationRes response = concertMapper.toResrvationResponse(reservation);
+        return ApiResponse.success(response);
+    }
+    @Operation(summary = "좌석 예약 요청 API 분산락 적용",description = "좌석 예약을 요청한다.")
+    @PostMapping("/reserve/distribute")
+    public ApiResponse<ReservationRes> reserveConcertRedisLock(
+            @RequestHeader("Authorization") String token,
+            @RequestBody ReservationReq request) {
+
+        Reservation reservation = concertUseCase.reserveConcertRedisLock(token, request.performanceId(), request.seatId());
 
         ReservationRes response = concertMapper.toResrvationResponse(reservation);
         return ApiResponse.success(response);

@@ -32,4 +32,11 @@ public class Concert {
 
     @Column(name = "end_date", nullable = false)
     private LocalDate endDate;
+
+    public Concert(String title, LocalDateTime reservationStartAt, LocalDate startDate, LocalDate endDate) {
+        this.title = title;
+        this.reservationStartAt = reservationStartAt;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
 }

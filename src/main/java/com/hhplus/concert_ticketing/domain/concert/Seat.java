@@ -36,6 +36,17 @@ public class Seat {
     @Column(name = "expired_at")
     private LocalDateTime expiredAt;
 
+    @Version
+    private Integer version;
+
+    public Seat(Long performanceId, Integer seatNo, Integer price, SeatStatus status) {
+        this.performanceId = performanceId;
+        this.seatNo = seatNo;
+        this.price = price;
+        this.status = status;
+        this.expiredAt = LocalDateTime.now().plusMinutes(5);
+    }
+
     public void isReservedCheck(){
         if(this.status != SeatStatus.AVAILABLE) {
             throw new IllegalArgumentException("해당 좌석은 예약 할 수 없습니다.");

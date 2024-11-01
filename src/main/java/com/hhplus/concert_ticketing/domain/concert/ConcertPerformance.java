@@ -36,6 +36,13 @@ public class ConcertPerformance {
     @Column(name = "total_seat",nullable = false)
     private Integer totalSeat;
 
+    public ConcertPerformance(Long concertId, LocalDateTime performanceAt, Integer availableSeat, Integer totalSeat) {
+        this.concertId = concertId;
+        this.status = ConcertStatus.AVAILABLE;
+        this.performanceAt = performanceAt;
+        this.availableSeat = availableSeat;
+        this.totalSeat = totalSeat;
+    }
 
     public void isSoldOutCheck(){
         if(this.getStatus() == ConcertStatus.SOLD_OUT){
