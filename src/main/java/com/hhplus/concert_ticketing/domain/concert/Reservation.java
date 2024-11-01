@@ -21,7 +21,7 @@ public class Reservation {
     private Long userId;
 
     @Column(name = "performance_id",nullable = false)
-    private Long performaceId;
+    private Long performanceId;
 
     @Column(name = "seat_id",nullable = false)
     private Long seatId;
@@ -50,7 +50,7 @@ public class Reservation {
 
     public Reservation(Long userId, Concert concert, ConcertPerformance concertPerformance, Seat seat) {
         this.userId = userId;
-        this.performaceId = concertPerformance.getId();
+        this.performanceId = concertPerformance.getId();
         this.seatId = seat.getId();
         this.status = ReservationStatus.TEMPORARY;
         this.concertTitle = concert.getTitle();

@@ -19,4 +19,9 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     public Reservation findById(Long reservationId) {
         return jpaReservationRepository.findById(reservationId).orElse(null);
     }
+
+    @Override
+    public int countByPerformanceIdAndSeatId(Long performanceId, Long seatId) {
+        return jpaReservationRepository.countByPerformanceIdAndSeatId(performanceId,seatId);
+    }
 }
