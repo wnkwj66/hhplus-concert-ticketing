@@ -73,7 +73,7 @@ class UserUseCaseTest {
     }
 
     @Test
-    @DisplayName("한명의 유저가 동시에 3번 잔액 충전 시 1번만 잔액충전됨")
+    @DisplayName("한명의 유저가 동시에 10번 잔액 충전 시 1번만 잔액충전됨")
     public void 낙관적락_충돌_테스트() throws InterruptedException {
         // given
         int threadCount =10;
@@ -114,7 +114,7 @@ class UserUseCaseTest {
 
         assertEquals(10000 + 1000, finalPoint.getAmount());
         assertEquals(1, successfulReservations.get());
-        assertEquals(2, errorReservations.get());
+        assertEquals(9, errorReservations.get());
     }
     @Test
     void 비관적락_테스트() throws InterruptedException {
