@@ -1,3 +1,4 @@
+/*
 package com.hhplus.concert_ticketing.interfaces.scheduler;
 
 import com.hhplus.concert_ticketing.application.QueueUseCase;
@@ -21,3 +22,4 @@ public class QueueScheduler {
         queueUseCase.activateQueueForPerformances();
     }
 }
+*/
