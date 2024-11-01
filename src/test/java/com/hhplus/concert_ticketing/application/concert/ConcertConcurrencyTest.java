@@ -6,6 +6,7 @@ import com.hhplus.concert_ticketing.domain.queue.Queue;
 import com.hhplus.concert_ticketing.domain.queue.QueueStatus;
 import com.hhplus.concert_ticketing.infra.repository.concert.JpaConcertRepository;
 import com.hhplus.concert_ticketing.infra.repository.concert.JpaPerformanceRepository;
+import com.hhplus.concert_ticketing.infra.repository.concert.JpaReservationRepository;
 import com.hhplus.concert_ticketing.infra.repository.concert.JpaSeatRepository;
 import com.hhplus.concert_ticketing.infra.repository.queue.JpaQueueRepository;
 import org.junit.jupiter.api.AfterEach;
@@ -13,14 +14,17 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -36,10 +40,13 @@ public class ConcertConcurrencyTest {
     private JpaSeatRepository jpaSeatRepository;
     @Autowired
     private JpaQueueRepository jpaQueueRepository;
+    @Autowired
+    private JpaReservationRepository jpaReservationRepository;
 
     private String token;
     private Long userId;
     private Queue queue;
+    private Seat seat;
 
     @BeforeEach
     public void setUp() {
@@ -51,8 +58,7 @@ public class ConcertConcurrencyTest {
 
         ConcertPerformance performance = jpaPerformanceRepository.save(new ConcertPerformance(1L, concert.getId(), ConcertStatus.AVAILABLE,LocalDateTime.now().plusDays(1),10,50));
 
-        Seat seat = jpaSeatRepository.save(new Seat(1L,performance.getId(), 15, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusMinutes(5)));
-
+        seat = jpaSeatRepository.save(new Seat(performance.getId(), 15, 50000, SeatStatus.AVAILABLE));
         token = Queue.generateJwtToken(userId, concert.getId(),performance.getId());
         // 테스트용 Queue 생성
         queue = new Queue(userId,concert.getId(),performance.getId(), token , QueueStatus.ACTIVE);
@@ -64,9 +70,17 @@ public class ConcertConcurrencyTest {
         jpaPerformanceRepository.deleteAll();
         jpaConcertRepository.deleteAll();
     }
-
     @Test
-    void 좌석_임시예약_동시성_테스트() throws InterruptedException {
+    void 좌석_임시예약_테스트() {
+        concertUseCase.reserveConcertPessimisticLock(token, 1L, 1L);
+        Seat result = jpaSeatRepository.findById(seat.getId()).get();
+
+        // then
+        assertEquals(15,result.getSeatNo());
+        assertEquals(SeatStatus.TEMPORARY,result.getStatus());
+    }
+    @Test
+    void 좌석_임시예약_동시성_비관적락_테스트() throws InterruptedException {
         // given
         int numberOfThreads = 10; // 동시 시도 횟수
         CountDownLatch latch = new CountDownLatch(numberOfThreads);
@@ -76,7 +90,7 @@ public class ConcertConcurrencyTest {
         for (int i = 0; i <= numberOfThreads; i++) {
             executorService.submit(() -> {
                 try {
-                    concertUseCase.reserveConcert(token, 1L, 1L);
+                    concertUseCase.reserveConcertPessimisticLock(token, 1L, 1L);
                     successfulReservations.getAndIncrement();
                 } catch (Exception e) {
                     throw new IllegalStateException("에러발생");
@@ -92,5 +106,60 @@ public class ConcertConcurrencyTest {
         // 예약이 하나만 성공
         assertEquals(1, successfulReservations.get());
     }
+    @Test
+    void 좌석_임시예약_동시성_낙관적락_테스트() throws InterruptedException {
+        // given
+        int numberOfThreads = 10; // 동시 시도 횟수
+        CountDownLatch latch = new CountDownLatch(numberOfThreads);
+        ExecutorService executorService = Executors.newFixedThreadPool(numberOfThreads);
+        AtomicInteger successfulReservations = new AtomicInteger();
+        AtomicInteger errorReservations = new AtomicInteger();
 
+        // when
+        for (int i=0; i < numberOfThreads; i++) {
+            // excute() -> 리턴 타입이 void로 Task의 실행 결과나 Task의 상태를 알 수 없다.
+            executorService.execute(()->{
+                try{
+                    concertUseCase.reserveConcertPessimisticLock(token, 1L, 1L);
+                    successfulReservations.getAndIncrement();
+                } catch (Exception e) {
+                    errorReservations.getAndIncrement();
+                    throw new ObjectOptimisticLockingFailureException("충돌 발생 : "+ e.getMessage(), e);
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+        latch.await();
+        // ExecutorService 종료
+        executorService.shutdown();
+        System.out.println("성공 횟수 : " + successfulReservations.get());
+        System.out.println("실패 횟수 : " + errorReservations.get());
+        // then
+        assertEquals(1, successfulReservations.get());
+        assertEquals(9, errorReservations.get());
+    }
+
+    @Test
+    void redisLock_좌석예약_동시성테스트() throws InterruptedException {
+        // given
+        int threadCount = 10;
+        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+        CountDownLatch latch = new CountDownLatch(threadCount);
+
+        // when
+        for (int i = 0; i < threadCount; i++) {
+            executorService.submit(() -> {
+                try {
+                    concertUseCase.reserveConcertRedisLock(token, 1L, 1L);
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+        latch.await(10, TimeUnit.SECONDS);
+        executorService.shutdown();
+        long reservationCount = jpaReservationRepository.countByPerformanceIdAndSeatId(1L, 1L);
+        assertThat(reservationCount).isEqualTo(1);
+    }
 }
