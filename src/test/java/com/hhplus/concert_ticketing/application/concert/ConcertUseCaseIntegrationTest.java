@@ -63,7 +63,7 @@ public class ConcertUseCaseIntegrationTest {
 
         ConcertPerformance performance = jpaPerformanceRepository.save(new ConcertPerformance(1L, concert.getId(), ConcertStatus.AVAILABLE,LocalDateTime.now().plusDays(1),10,50));
 
-        Seat seat = jpaSeatRepository.save(new Seat(1L,performance.getId(), 15, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusMinutes(5)));
+        Seat seat = jpaSeatRepository.save(new Seat(performance.getId(), 15, 50000, SeatStatus.AVAILABLE));
 
         token = Queue.generateJwtToken(userId, concert.getId(),performance.getId());
         // 테스트용 Queue 생성

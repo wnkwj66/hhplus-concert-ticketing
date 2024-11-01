@@ -52,8 +52,7 @@ public class PaymentConcurrencyTest {
         Concert concert = jpaConcertRepository.save(new Concert(1L, "Concert A", LocalDateTime.of(2024, 10, 20, 12, 0, 0), LocalDate.of(2024, 10, 30), LocalDate.of(2024, 11, 22)));
 
         ConcertPerformance performance = jpaPerformanceRepository.save(new ConcertPerformance(1L, concert.getId(), ConcertStatus.AVAILABLE,LocalDateTime.now().plusDays(1),10,50));
-
-        Seat seat = jpaSeatRepository.save(new Seat(1L,performance.getId(), 15, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusMinutes(5)));
+        Seat seat = jpaSeatRepository.save(new Seat(performance.getId(), 15, 50000, SeatStatus.AVAILABLE));
 
         token = Queue.generateJwtToken(userId, concert.getId(),performance.getId());
         // 테스트용 Queue 생성
