@@ -1,18 +1,18 @@
 package com.hhplus.concert_ticketing.application.concert;
 
-import com.hhplus.concert_ticketing.application.ConcertUseCase;
-import com.hhplus.concert_ticketing.domain.concert.*;
-import com.hhplus.concert_ticketing.domain.payment.Payment;
-import com.hhplus.concert_ticketing.domain.queue.Queue;
-import com.hhplus.concert_ticketing.domain.queue.QueueStatus;
-import com.hhplus.concert_ticketing.domain.user.Point;
-import com.hhplus.concert_ticketing.domain.user.Users;
-import com.hhplus.concert_ticketing.infra.concert.JpaConcertRepository;
-import com.hhplus.concert_ticketing.infra.concert.JpaPerformanceRepository;
-import com.hhplus.concert_ticketing.infra.concert.JpaSeatRepository;
-import com.hhplus.concert_ticketing.infra.queue.JpaQueueRepository;
-import com.hhplus.concert_ticketing.infra.user.JpaPointRepository;
-import com.hhplus.concert_ticketing.infra.user.JpaUsersRepository;
+import com.hhplus.concert_ticketing.app.application.ConcertUseCase;
+import com.hhplus.concert_ticketing.app.domain.concert.*;
+import com.hhplus.concert_ticketing.app.domain.payment.Payment;
+import com.hhplus.concert_ticketing.app.domain.queue.Queue;
+import com.hhplus.concert_ticketing.app.domain.queue.QueueStatus;
+import com.hhplus.concert_ticketing.app.domain.user.Point;
+import com.hhplus.concert_ticketing.app.domain.user.Users;
+import com.hhplus.concert_ticketing.app.infra.repository.concert.JpaConcertRepository;
+import com.hhplus.concert_ticketing.app.infra.repository.concert.JpaPerformanceRepository;
+import com.hhplus.concert_ticketing.app.infra.repository.concert.JpaSeatRepository;
+import com.hhplus.concert_ticketing.app.infra.repository.queue.JpaQueueRepository;
+import com.hhplus.concert_ticketing.app.infra.repository.user.JpaPointRepository;
+import com.hhplus.concert_ticketing.app.infra.repository.user.JpaUsersRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -63,7 +63,7 @@ public class ConcertUseCaseIntegrationTest {
 
         ConcertPerformance performance = jpaPerformanceRepository.save(new ConcertPerformance(1L, concert.getId(), ConcertStatus.AVAILABLE,LocalDateTime.now().plusDays(1),10,50));
 
-        Seat seat = jpaSeatRepository.save(new Seat(1L,performance.getId(), 15, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusMinutes(5)));
+        Seat seat = jpaSeatRepository.save(new Seat(performance.getId(), 15, 50000, SeatStatus.AVAILABLE));
 
         token = Queue.generateJwtToken(userId, concert.getId(),performance.getId());
         // 테스트용 Queue 생성
@@ -104,7 +104,7 @@ public class ConcertUseCaseIntegrationTest {
     void 결제_진행_성공_테스트() {
         // given
         Users user = jpaUserRepository.save(new Users(1L,"테스터"));
-        Point userPoint = new Point(1L, user.getId(), 10000);
+        Point userPoint = new Point(user.getId(), 10000);
         jpaPointRepository.save(userPoint);
 
         // when

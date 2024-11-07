@@ -1,5 +1,7 @@
 package com.hhplus.concert_ticketing.domain.queue;
 
+import com.hhplus.concert_ticketing.app.domain.queue.Queue;
+import com.hhplus.concert_ticketing.app.domain.queue.QueueStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
