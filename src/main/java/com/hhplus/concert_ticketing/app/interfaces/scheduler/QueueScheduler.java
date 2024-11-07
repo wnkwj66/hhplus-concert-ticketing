@@ -17,7 +17,7 @@ public class QueueScheduler {
 //        queueUseCase.updateExpireConditionToken();
 //    }
 
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 30000)
     public void processQueue() {
         queueUseCase.activateQueueForPerformances();
     }
