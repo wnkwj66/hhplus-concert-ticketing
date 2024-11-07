@@ -1,10 +1,9 @@
 package com.hhplus.concert_ticketing.domain.concert;
 
-import com.hhplus.concert_ticketing.application.ConcertUseCase;
-import com.hhplus.concert_ticketing.domain.concert.*;
-import com.hhplus.concert_ticketing.domain.payment.Payment;
-import com.hhplus.concert_ticketing.domain.payment.PaymentStatus;
-import com.hhplus.concert_ticketing.domain.user.Point;
+import com.hhplus.concert_ticketing.app.application.ConcertUseCase;
+import com.hhplus.concert_ticketing.app.domain.concert.*;
+import com.hhplus.concert_ticketing.app.domain.payment.Payment;
+import com.hhplus.concert_ticketing.app.domain.payment.PaymentStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

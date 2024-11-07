@@ -1,14 +1,14 @@
 package com.hhplus.concert_ticketing.application.concert;
 
-import com.hhplus.concert_ticketing.application.ConcertUseCase;
-import com.hhplus.concert_ticketing.domain.concert.*;
-import com.hhplus.concert_ticketing.domain.queue.Queue;
-import com.hhplus.concert_ticketing.domain.queue.QueueStatus;
-import com.hhplus.concert_ticketing.infra.repository.concert.JpaConcertRepository;
-import com.hhplus.concert_ticketing.infra.repository.concert.JpaPerformanceRepository;
-import com.hhplus.concert_ticketing.infra.repository.concert.JpaReservationRepository;
-import com.hhplus.concert_ticketing.infra.repository.concert.JpaSeatRepository;
-import com.hhplus.concert_ticketing.infra.repository.queue.JpaQueueRepository;
+import com.hhplus.concert_ticketing.app.application.ConcertUseCase;
+import com.hhplus.concert_ticketing.app.domain.concert.*;
+import com.hhplus.concert_ticketing.app.domain.queue.Queue;
+import com.hhplus.concert_ticketing.app.domain.queue.QueueStatus;
+import com.hhplus.concert_ticketing.app.infra.repository.concert.JpaConcertRepository;
+import com.hhplus.concert_ticketing.app.infra.repository.concert.JpaPerformanceRepository;
+import com.hhplus.concert_ticketing.app.infra.repository.concert.JpaReservationRepository;
+import com.hhplus.concert_ticketing.app.infra.repository.concert.JpaSeatRepository;
+import com.hhplus.concert_ticketing.app.infra.repository.queue.JpaQueueRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

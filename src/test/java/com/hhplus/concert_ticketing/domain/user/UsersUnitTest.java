@@ -1,5 +1,6 @@
 package com.hhplus.concert_ticketing.domain.user;
 
+import com.hhplus.concert_ticketing.app.domain.user.Point;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
