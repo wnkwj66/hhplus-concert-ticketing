@@ -3,6 +3,7 @@ package com.hhplus.concert_ticketing.app.domain.queue;
 
 import org.springframework.data.domain.Pageable;
 import java.util.List;
+import java.util.Optional;
 
 public interface QueueRepository {
     Queue findByToken(String token);
@@ -18,4 +19,5 @@ public interface QueueRepository {
     void updateExpireConditionToken();
 
     List<Queue> findWaitingForActivation(Long concertId, Long performanceId, Pageable pageable);
+
 }

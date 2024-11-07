@@ -11,7 +11,7 @@ public class QueueMapper {
 
     public CreateQueueRes toCreateQueueRes(Queue queue) {
         return new CreateQueueRes(
-                queue.getTokenId()
+                queue.getToken()
         );
 
     }

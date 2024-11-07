@@ -4,8 +4,10 @@ import com.hhplus.concert_ticketing.app.domain.queue.Queue;
 import com.hhplus.concert_ticketing.app.domain.queue.QueueRepository;
 import com.hhplus.concert_ticketing.app.domain.queue.QueueStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,7 +19,7 @@ public class QueueRepositoryImpl implements QueueRepository {
 
     @Override
     public Queue findByToken(String tokenId) {
-        return jpaQueueRepository.findByTokenId(tokenId).orElse(null);
+        return jpaQueueRepository.findByTokenId(tokenId).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
     }
 
     @Override

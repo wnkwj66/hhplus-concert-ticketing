@@ -1,7 +1,6 @@
 package com.hhplus.concert_ticketing.app.application;
 
 import com.hhplus.concert_ticketing.app.domain.concert.*;
-import com.hhplus.concert_ticketing.domain.concert.*;
 import com.hhplus.concert_ticketing.app.domain.payment.Payment;
 import com.hhplus.concert_ticketing.app.domain.payment.PaymentRepository;
 import com.hhplus.concert_ticketing.app.domain.queue.Queue;

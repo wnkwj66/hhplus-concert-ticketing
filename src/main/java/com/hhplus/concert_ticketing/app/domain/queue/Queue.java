@@ -36,8 +36,8 @@ public class Queue {
     @Column(name = "performance_id",nullable = false)
     private Long performanceId;
 
-    @Column(name = "token_id",nullable = false)
-    private String tokenId;
+    @Column(name = "token")
+    private String token;
 
     @Column(name = "status",nullable = false)
     private QueueStatus status;
@@ -51,22 +51,22 @@ public class Queue {
     @Column(name = "expired_at",nullable = false)
     private LocalDateTime expiredAt;
 
-    public Queue(Long userId, Long concertId, Long performanceId, String tokenId, QueueStatus status) {
+    public Queue(Long userId, Long concertId, Long performanceId, String token, QueueStatus status) {
         this.userId = userId;
         this.concertId = concertId;
         this.performanceId = performanceId;
-        this.tokenId = tokenId;
+        this.token = token;
         this.status = status;
         this.createAt = LocalDateTime.now();
         this.updateAt = LocalDateTime.now();
         this.expiredAt = LocalDateTime.now().plusMinutes(5);
     }
 
-    public Queue(Long userId, Long concertId, Long performanceId, String tokenId) {
+    public Queue(Long userId, Long concertId, Long performanceId, String token) {
         this.userId = userId;
         this.concertId = concertId;
         this.performanceId = performanceId;
-        this.tokenId = tokenId;
+        this.token = token;
         this.status = QueueStatus.WAITING;
         this.createAt = LocalDateTime.now();
         this.updateAt = LocalDateTime.now();
