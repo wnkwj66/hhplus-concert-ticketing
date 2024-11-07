@@ -1,5 +1,6 @@
 package com.hhplus.concert_ticketing.domain.user;
 
+import com.hhplus.concert_ticketing.app.domain.user.Point;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -13,7 +14,7 @@ public class UsersUnitTest {
     void 포인트_충전_테스트(){
         // given
         Long userId = 1L; // 유저 직접 선언
-        Point point = new Point(1L,userId,5000);
+        Point point = new Point(userId,5000);
 
         point.chargePoint(50000);
 
@@ -26,9 +27,9 @@ public class UsersUnitTest {
     void 포인트_충전_테스트_실패_충전금액_0이거나_음수(){
         // given
         Long userId = 1L; // 유저 직접 선언
-        Point point = new Point(1L,userId,5000);
+        Point point = new Point(userId,5000);
 
-        IllegalStateException e = assertThrows(IllegalStateException.class, () -> point.chargePoint(0));
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> point.chargePoint(0));
         assertEquals("충전금액이 없습니다.",e.getMessage());
 
     }

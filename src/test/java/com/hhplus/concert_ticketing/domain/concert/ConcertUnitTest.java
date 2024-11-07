@@ -1,10 +1,9 @@
 package com.hhplus.concert_ticketing.domain.concert;
 
-import com.hhplus.concert_ticketing.application.ConcertUseCase;
-import com.hhplus.concert_ticketing.domain.concert.*;
-import com.hhplus.concert_ticketing.domain.payment.Payment;
-import com.hhplus.concert_ticketing.domain.payment.PaymentStatus;
-import com.hhplus.concert_ticketing.domain.user.Point;
+import com.hhplus.concert_ticketing.app.application.ConcertUseCase;
+import com.hhplus.concert_ticketing.app.domain.concert.*;
+import com.hhplus.concert_ticketing.app.domain.payment.Payment;
+import com.hhplus.concert_ticketing.app.domain.payment.PaymentStatus;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -108,10 +107,10 @@ class ConcertUnitTest {
         ConcertPerformance concertPerformance = new ConcertPerformance(1L,concertId, ConcertStatus.AVAILABLE,LocalDateTime.now().plusDays(1),10,50);
 
         List<Seat> mockSeats = Arrays.asList(
-                new Seat(1L,concertPerformance.getId(), 1, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusMinutes(5)),
-                new Seat(2L,concertPerformance.getId(), 2, 30000, SeatStatus.TEMPORARY, LocalDateTime.now().plusMinutes(5)),
-                new Seat(3L,concertPerformance.getId(), 3, 40000, SeatStatus.RESERVED, LocalDateTime.now().plusMinutes(5)),
-                new Seat(4L,concertPerformance.getId(), 4, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusMinutes(5))
+                new Seat(concertPerformance.getId(), 1, 50000, SeatStatus.AVAILABLE),
+                new Seat(concertPerformance.getId(), 2, 30000, SeatStatus.TEMPORARY),
+                new Seat(concertPerformance.getId(), 3, 40000, SeatStatus.RESERVED ),
+                new Seat(concertPerformance.getId(), 4, 50000, SeatStatus.AVAILABLE)
         );
 
         // when
@@ -135,7 +134,7 @@ class ConcertUnitTest {
         // given
         Concert mockConcert = new Concert(1L, "Concert A", LocalDateTime.of(2024, 10, 3, 12, 0, 0), LocalDate.of(2024, 10, 10), LocalDate.of(2024, 10, 11));
         ConcertPerformance mockConcertPerformance = new ConcertPerformance(1L,mockConcert.getId(), ConcertStatus.AVAILABLE,LocalDateTime.now().plusDays(1),10,50);
-        Seat mockSeat = new Seat(1L,mockConcertPerformance.getId(), 1, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusMinutes(5));
+        Seat mockSeat = new Seat(mockConcertPerformance.getId(), 1, 50000, SeatStatus.AVAILABLE);
 
         // when
         Reservation reservation = new Reservation(userId,mockConcert,mockConcertPerformance,mockSeat);
@@ -151,7 +150,7 @@ class ConcertUnitTest {
         // given
         Concert mockConcert = new Concert(1L, "Concert A", LocalDateTime.of(2024, 10, 3, 12, 0, 0), LocalDate.of(2024, 10, 10), LocalDate.of(2024, 10, 11));
         ConcertPerformance mockConcertPerformance = new ConcertPerformance(1L,mockConcert.getId(), ConcertStatus.AVAILABLE,LocalDateTime.now().plusDays(1),10,50);
-        Seat mockSeat = new Seat(1L,mockConcertPerformance.getId(), 1, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusMinutes(5));
+        Seat mockSeat = new Seat(mockConcertPerformance.getId(), 1, 50000, SeatStatus.AVAILABLE);
 
         // when & then
         assertDoesNotThrow(mockSeat::isReservedCheck);
@@ -167,7 +166,7 @@ class ConcertUnitTest {
 
         Concert mockConcert = new Concert(1L, "Concert A", LocalDateTime.of(2024, 10, 3, 12, 0, 0), LocalDate.of(2024, 10, 10), LocalDate.of(2024, 10, 11));
         ConcertPerformance mockConcertPerformance = new ConcertPerformance(1L,mockConcert.getId(), ConcertStatus.AVAILABLE,LocalDateTime.now().plusDays(1),10,50);
-        Seat mockSeat = new Seat(1L,mockConcertPerformance.getId(), 1, 50000, SeatStatus.AVAILABLE, LocalDateTime.now().plusMinutes(5));
+        Seat mockSeat = new Seat(mockConcertPerformance.getId(), 1, 50000, SeatStatus.AVAILABLE);
         Reservation reservation = new Reservation(userId, mockConcert, mockConcertPerformance, mockSeat);
 
         // when
