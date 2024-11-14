@@ -6,6 +6,7 @@ import com.hhplus.concert_ticketing.app.domain.user.UserRepository;
 import com.hhplus.concert_ticketing.app.domain.user.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,12 +28,10 @@ public class UserService {
     public void deductPoint(Long userId, Integer totalAmount) {
         Point point = getPointByUserId(userId);
         point.deductAmount(totalAmount);
-        pointRepository.save(point);
-
     }
 
     public Users createUser(String name) {
-        Point point = new Point();
+        Point point = new Point(0);
         pointRepository.save(point);
 
         // 유저 객체  생성

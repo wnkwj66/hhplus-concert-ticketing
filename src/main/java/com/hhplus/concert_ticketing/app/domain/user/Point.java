@@ -19,8 +19,11 @@ public class Point {
     private Long id;
 
     @Column(name = "amount",nullable = false)
-    private Integer amount = 0;
+    private Integer amount;
 
+    public Point(Integer amount) {
+        this.amount = amount;
+    }
 
     public void chargePoint(Integer amount) {
         if(0 >= amount) {
