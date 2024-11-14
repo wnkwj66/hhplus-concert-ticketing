@@ -37,10 +37,16 @@ dependencies {
 	runtimeOnly ("io.jsonwebtoken:jjwt-impl:0.11.5")
 	runtimeOnly ("io.jsonwebtoken:jjwt-jackson:0.11.5") // 필요한 경우 JSON 처리용
 	// DB
-	runtimeOnly("com.h2database:h2")
+	runtimeOnly("com.mysql:mysql-connector-j")
+	// runtimeOnly("com.h2database:h2")
 	// test
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	// Optimistic Lock
+	implementation("org.springframework.retry:spring-retry:1.3.3")
+	implementation("org.springframework:spring-aspects:5.3.22")
+	// Redis
+	implementation("org.redisson:redisson-spring-boot-starter:3.23.2")
 
 
 }

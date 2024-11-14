@@ -54,8 +54,7 @@ erDiagram
     }
     Concert {
         long id pk
-        string name
-        string concertStatus
+        string title
         datetime reservationStartAt
         date startDate
         date endDate
@@ -64,6 +63,7 @@ erDiagram
     Performance {
         long id pk
         long concertId fk
+        string status
         datetime performanceAt
     }
     
