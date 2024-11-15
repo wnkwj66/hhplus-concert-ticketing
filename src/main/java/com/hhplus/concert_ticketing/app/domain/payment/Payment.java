@@ -26,6 +26,7 @@ public class Payment {
     @Column(name = "amount",nullable = false)
     private Integer amount;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
     private PaymentStatus status;
 
@@ -45,6 +46,11 @@ public class Payment {
     }
     public void finishPayment(){
         this.status = PaymentStatus.DONE;
+        this.updateAt = LocalDateTime.now();
+    }
+
+    public void markAsFailed() {
+        this.status = PaymentStatus.FAILED;
         this.updateAt = LocalDateTime.now();
     }
 }

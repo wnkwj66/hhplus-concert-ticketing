@@ -2,9 +2,9 @@ package com.hhplus.concert_ticketing.app.domain.reservation;
 
 public interface ReservationRepository {
 
-    public void save(Reservation reservation);
+    void save(Reservation reservation);
 
-    public Reservation findById(Long reservationId);
+    Reservation findById(Long reservationId);
 
-    public int countByPerformanceIdAndSeatId(Long performanceId, Long seatId);
+    int countByPerformanceIdAndSeatId(Long performanceId, Long seatId);
 }

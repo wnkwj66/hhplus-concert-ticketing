@@ -2,6 +2,7 @@ package com.hhplus.concert_ticketing.app.infra.reservation;
 
 import com.hhplus.concert_ticketing.app.domain.reservation.Reservation;
 import com.hhplus.concert_ticketing.app.domain.reservation.ReservationRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -16,8 +17,8 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     }
 
     @Override
-    public Reservation findById(Long reservationId) {
-        return jpaReservationRepository.findById(reservationId).orElse(null);
+    public Reservation findById(Long id) {
+        return jpaReservationRepository.findById(id).orElseThrow(()->new EntityNotFoundException("예약정보를 찾을 수 없습니다."));
     }
 
     @Override
