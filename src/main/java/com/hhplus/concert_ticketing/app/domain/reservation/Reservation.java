@@ -67,10 +67,18 @@ public class Reservation {
         this.totalAmount = seat.getPrice();
     }
 
+
     public void isValidReservation() {
         if(this.getStatus() == ReservationStatus.CANCEL) {
             throw new ApiException(ErrorCode.RESERVE_CANCEL_ERROR, LogLevel.INFO);
         }
     }
 
+
+    public void finishReservation() {
+        if(this.status == ReservationStatus.RESERVED){
+            throw new ApiException(ErrorCode.RESERVE_CANCEL_ERROR, LogLevel.INFO);
+        }
+        this.status = ReservationStatus.RESERVED;
+    }
 }

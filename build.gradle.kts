@@ -47,6 +47,8 @@ dependencies {
 	implementation("org.springframework:spring-aspects:5.3.22")
 	// Redis
 	implementation("org.redisson:redisson-spring-boot-starter:3.23.2")
+	// kafka
+	implementation("org.springframework.kafka:spring-kafka")
 
 
 }
