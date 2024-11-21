@@ -10,7 +10,8 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: create
+      #ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
@@ -25,19 +26,13 @@ spring:
       port: 6379
 
   kafka:
-    producer:
-      bootstrap-servers: kafka-0:9092
-      consumer:
-        group-id: test-group
-        auto-offset-reset: earliest
-        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-        value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      producer:
-        key-serializer: org.apache.kafka.common.serialization.StringSerializer
-        value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    bootstrap-servers: kafka:9092
+    consumer:
+      group-id: test-group
+      auto-offset-reset: earliest
+    topic:
+      payment: payment-topic
 
-  topic:
-    name: dev-topic
 
 logging:
   level:
