@@ -1,0 +1,45 @@
+spring:
+  datasource:
+    #url: jdbc:h2:tcp://localhost/~/test
+    #username: sa
+    #driver-class-name: org.h2.Driver
+    url: jdbc:mysql://localhost:3306/CONCERT_SERVICE?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+  data:
+    redis:
+      host: localhost
+      protocol: redis
+      timeout: 2000
+      password:
+      port: 6379
+
+  kafka:
+    producer:
+      bootstrap-servers: kafka-0:9092
+      consumer:
+        group-id: test-group
+        auto-offset-reset: earliest
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      producer:
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+  topic:
+    name: dev-topic
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.orm.jdbc.bind: trace
