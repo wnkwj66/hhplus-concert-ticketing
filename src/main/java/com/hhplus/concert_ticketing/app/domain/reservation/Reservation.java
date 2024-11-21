@@ -76,9 +76,6 @@ public class Reservation {
 
 
     public void finishReservation() {
-        if(this.status == ReservationStatus.RESERVED){
-            throw new ApiException(ErrorCode.RESERVE_CANCEL_ERROR, LogLevel.INFO);
-        }
         this.status = ReservationStatus.RESERVED;
     }
 }
