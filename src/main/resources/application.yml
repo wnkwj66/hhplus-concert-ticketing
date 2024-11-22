@@ -5,7 +5,7 @@ spring:
     #driver-class-name: org.h2.Driver
     url: jdbc:mysql://localhost:3306/CONCERT_SERVICE?useSSL=false&allowPublicKeyRetrieval=true&useUnicode=true&serverTimezone=Asia/Seoul
     username: root
-    password:
+    password: dnjswnd825*
     driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
@@ -26,9 +26,9 @@ spring:
       port: 6379
 
   kafka:
-    bootstrap-servers: kafka:9092
+    bootstrap-servers: localhost:9094
     consumer:
-      group-id: test-group
+      group-id: concert-ticketing-group
       auto-offset-reset: earliest
     topic:
       payment: payment-topic
