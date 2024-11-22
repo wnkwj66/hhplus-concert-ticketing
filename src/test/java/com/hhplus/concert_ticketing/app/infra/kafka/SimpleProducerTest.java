@@ -16,6 +16,8 @@ class SimpleProducerTest {
     @Test
     @DisplayName("메세지_전송")
     void 메세지_전송() throws Exception {
-        simpleProducer.sendMessage("payment-topic", "hello world");
+        simpleProducer.sendMessage("dev-topic", "hello world");
+        simpleProducer.sendMessage("dev-topic", "key1", "hello world");
+        simpleProducer.sendMessage("dev-topic", 0, "key1", "hello world");
     }
 }

@@ -8,13 +8,9 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class KafkaConsumer {
-    @KafkaListener(topics = "payment-topic",groupId = "concert-ticketing-group")
+    @KafkaListener(topics = "dev-topic")
     public void receive(ConsumerRecord<String, String> consumerRecord) {
-        try {
-            log.info("수신한 키: {}", consumerRecord.key());
-            log.info("수신한 메세지: {}", consumerRecord.value());
-        } catch (Exception e) {
-            log.error("메시지 처리 중 오류 발생: {}", e.getMessage(), e);
-        }
+        log.info("수신한 키: {}", consumerRecord.key());
+        log.info("수신한 메세지: {}", consumerRecord.value());
     }
 }
