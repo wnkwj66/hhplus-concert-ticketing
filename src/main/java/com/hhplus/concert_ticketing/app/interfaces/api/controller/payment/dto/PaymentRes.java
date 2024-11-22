@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 public record PaymentRes(
         Long id,
         Integer amount,
-        PaymentStatus status
+        PaymentStatus status,
+        LocalDateTime createAt
 ) {
 }

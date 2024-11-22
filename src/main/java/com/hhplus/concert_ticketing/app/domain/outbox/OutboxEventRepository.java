@@ -8,4 +8,6 @@ import java.util.List;
 public interface OutboxEventRepository extends JpaRepository<OutboxEvent, Long> {
     // PENDING 상태의 이벤트 조회
     List<OutboxEvent> findByStatus(String status);
+
+    OutboxEvent findByEventPayload(String message);
 }

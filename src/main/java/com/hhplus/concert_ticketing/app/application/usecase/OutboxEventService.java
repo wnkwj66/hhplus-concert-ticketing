@@ -32,4 +32,8 @@ public class OutboxEventService {
         outboxEventRepository.save(event);
     }
 
+    @Transactional
+    public OutboxEvent findByMessage(String message) {
+        return outboxEventRepository.findByEventPayload(message);
+    }
 }

@@ -26,7 +26,7 @@ public class OutboxEvent {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "status", nullable = false)
-    private OutboxEventStatus status = OutboxEventStatus.INIT;
+    private OutboxEventStatus status;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now(); // 생성 시간
@@ -43,6 +43,7 @@ public class OutboxEvent {
     public OutboxEvent(String eventType, String eventPayload) {
         this.eventType = eventType;
         this.eventPayload = eventPayload;
+        this.status = OutboxEventStatus.INIT;
     }
 
     // 상태 변경 메서드

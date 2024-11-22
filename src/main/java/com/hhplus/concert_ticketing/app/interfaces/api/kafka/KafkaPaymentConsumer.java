@@ -14,8 +14,9 @@ public class KafkaPaymentConsumer {
     private final PaymentFacade paymentFacade;
 
     @KafkaListener(topics = "payment-topic")
-    public void receive(ConsumerRecord<String, String> consumerRecord) {
+    public void consume(ConsumerRecord<String, String> consumerRecord) {
+        log.info("수신한 키: {}", consumerRecord.key());
         log.info("수신한 메세지: {}", consumerRecord.value());
-
+        paymentFacade.paymentOutboxEvent(consumerRecord.value());
     }
 }
