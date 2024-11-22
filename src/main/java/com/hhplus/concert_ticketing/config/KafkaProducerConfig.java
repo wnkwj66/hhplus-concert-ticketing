@@ -15,6 +15,7 @@ import java.util.Map;
 @Slf4j
 @Configuration
 public class KafkaProducerConfig {
+
     @Bean
     public ProducerFactory<String, String> kafkaProducerFactory() {
         Map<String, Object> props = new HashMap<>();
